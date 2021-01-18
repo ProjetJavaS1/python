@@ -1,0 +1,44 @@
+from math import floor
+import numpy as np
+
+
+# compression
+P = ( [ [4,2,3, 1,1,3 ,8,8], [4,9,6,1,1,3 ,4,8], [4,5,4,1,1,3 ,4,8] , [4,2,3,1,1,3 ,4,8], [4,9,6,1,1,3 ,4,8], [4,5,4,1,1,3 ,4,8],[4,9,6,1,1,3 ,4,8], [4,5,4,1,1,3 ,4,8] ] ) 
+M = ( [ [4,2,3, 1,1,3 ,4,8], [4,9,5,1,1,3 ,4,8], [4,5,4,3,1,3 ,4,8] , [4,2,3,1,1,3 ,4,8], [4,9,6,1,1,3 ,4,8], [4,5,4,1,1,3 ,4,8],[4,9,6,1,1,3 ,4,8], [4,5,4,1,1,3 ,4,8] ] ) 
+Q = ( [ [4,2,3, 1,1,3 ,6,8], [4,9,6,1,1,3 ,4,8], [4,5,4,1,1,3 ,4,8] , [4,2,3,1,1,3 ,4,8], [4,9,6,1,1,8 ,4,8], [4,5,4,1,1,3 ,4,8],[4,9,6,1,1,3 ,4,8], [4,5,4,1,1,3 ,4,8] ] ) 
+
+def compression(P,M) : 
+
+# on applique le changement de base blocs par blocs (8x8)
+# le changement de base s'écrit D= PMPT avec M la matrice associée à l'image et P la matrice de changement de base
+# on construit la transposée de P
+    PT= np.transpose(P)
+
+    # dot pour le produit matricielle
+    D1= np.dot(P,M)
+    D2= np.dot(D1,PT)
+
+# on applique la matrice de quantification terme à terme
+# et on prend la partie entière grâce à floor
+
+    RES = np.floor_divide(D2,Q)
+    return RES
+
+T= np.matrix(compression(P,M))
+print(T)
+
+T1=T.tolist()
+print("        ")
+print(type(T1))
+
+
+def debruiter(M):
+
+    for i in range(8):
+        for j in range(8):
+            if i+j>=5:
+                M[i][j]=0
+           
+    print(M)
+
+debruiter(T1)
